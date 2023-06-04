@@ -24,6 +24,7 @@ class ViewController: UIViewController {
   }()
   
   private var attachmentManager: AttachmentManager?
+  private var viewModel = AttachmentListViewModel()
   
   // MARK: - Override Method
   
@@ -71,13 +72,14 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 5
+    return viewModel.attachmentItem.count
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentDetailCell", for: indexPath) as? AttachmentDetailCell else {
       return UITableViewCell()
     }
+    cell.configureView(using: viewModel.attachmentItem[indexPath.row])
     return cell
   }
   
@@ -88,7 +90,10 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView,
                  trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     let delete = UIContextualAction(style: .destructive, title: nil) { _, _, complete in
-          self.tableView.deleteRows(at: [indexPath], with: .automatic)
+      let privatID = self.viewModel.attachmentItem[indexPath.row].privateID ?? ""
+      self.viewModel.deleteAttachmentItem(privatID) {
+        self.tableView.deleteRows(at: [indexPath], with: .automatic)
+      }
       complete(true)
     }
     delete.image = UIImage(systemName: "trash")
@@ -110,6 +115,8 @@ extension ViewController: AttachmentDelegate {
   }
   
   func attachmentManager(_ attachmentItem: AttachmentItem) {
-    print(attachmentItem)
+    viewModel.createAttachmentItem(attachmentItem) {
+      self.tableView.reloadData()
+    }
   }
 }

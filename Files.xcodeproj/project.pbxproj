@@ -10,6 +10,9 @@
 		9D3C5DAB2A2CA872003695FD /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DAA2A2CA872003695FD /* FileManager+Extension.swift */; };
 		9D3C5DAE2A2CC4EB003695FD /* AttachmentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DAD2A2CC4EB003695FD /* AttachmentManager.swift */; };
 		9D3C5DB12A2CC99B003695FD /* AttachmentDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DB02A2CC99B003695FD /* AttachmentDetailCell.swift */; };
+		9D3C5DBB2A2CCC39003695FD /* AttachmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DBA2A2CCC39003695FD /* AttachmentListViewModel.swift */; };
+		9D3C5DBE2A2CCC72003695FD /* FilesDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DBC2A2CCC72003695FD /* FilesDataModel.xcdatamodeld */; };
+		9D3C5DC12A2CCD85003695FD /* CoreDataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DC02A2CCD85003695FD /* CoreDataServices.swift */; };
 		9D9B89892A2C30DB00C41F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B89882A2C30DB00C41F0F /* AppDelegate.swift */; };
 		9D9B898B2A2C30DB00C41F0F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B898A2A2C30DB00C41F0F /* SceneDelegate.swift */; };
 		9D9B898D2A2C30DB00C41F0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B898C2A2C30DB00C41F0F /* ViewController.swift */; };
@@ -22,6 +25,9 @@
 		9D3C5DAA2A2CA872003695FD /* FileManager+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+Extension.swift"; sourceTree = "<group>"; };
 		9D3C5DAD2A2CC4EB003695FD /* AttachmentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentManager.swift; sourceTree = "<group>"; };
 		9D3C5DB02A2CC99B003695FD /* AttachmentDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentDetailCell.swift; sourceTree = "<group>"; };
+		9D3C5DBA2A2CCC39003695FD /* AttachmentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentListViewModel.swift; sourceTree = "<group>"; };
+		9D3C5DBD2A2CCC72003695FD /* FilesDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FilesDataModel.xcdatamodel; sourceTree = "<group>"; };
+		9D3C5DC02A2CCD85003695FD /* CoreDataServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServices.swift; sourceTree = "<group>"; };
 		9D9B89852A2C30DB00C41F0F /* Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Files.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9B89882A2C30DB00C41F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D9B898A2A2C30DB00C41F0F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +57,23 @@
 			path = AttachmentManager;
 			sourceTree = "<group>";
 		};
+		9D3C5DB92A2CCC1D003695FD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9D3C5DBA2A2CCC39003695FD /* AttachmentListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		9D3C5DBF2A2CCCDF003695FD /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				9D3C5DBC2A2CCC72003695FD /* FilesDataModel.xcdatamodeld */,
+				9D3C5DC02A2CCD85003695FD /* CoreDataServices.swift */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
 		9D9B897C2A2C30DB00C41F0F = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +95,7 @@
 			children = (
 				9D9B899C2A2C312F00C41F0F /* MainResources */,
 				9D9B899E2A2C317000C41F0F /* Model */,
+				9D3C5DB92A2CCC1D003695FD /* ViewModel */,
 				9D9B899D2A2C315500C41F0F /* Controller */,
 			);
 			path = Files;
@@ -86,6 +110,7 @@
 				9D9B89932A2C30DB00C41F0F /* LaunchScreen.storyboard */,
 				9D9B89962A2C30DB00C41F0F /* Info.plist */,
 				9D3C5DAA2A2CA872003695FD /* FileManager+Extension.swift */,
+				9D3C5DBF2A2CCCDF003695FD /* CoreDataModel */,
 			);
 			path = MainResources;
 			sourceTree = "<group>";
@@ -179,11 +204,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D9B898D2A2C30DB00C41F0F /* ViewController.swift in Sources */,
+				9D3C5DBB2A2CCC39003695FD /* AttachmentListViewModel.swift in Sources */,
 				9D3C5DB12A2CC99B003695FD /* AttachmentDetailCell.swift in Sources */,
 				9D9B89892A2C30DB00C41F0F /* AppDelegate.swift in Sources */,
 				9D3C5DAE2A2CC4EB003695FD /* AttachmentManager.swift in Sources */,
 				9D9B898B2A2C30DB00C41F0F /* SceneDelegate.swift in Sources */,
 				9D9B89A02A2C318F00C41F0F /* AttachmentItem.swift in Sources */,
+				9D3C5DBE2A2CCC72003695FD /* FilesDataModel.xcdatamodeld in Sources */,
+				9D3C5DC12A2CCD85003695FD /* CoreDataServices.swift in Sources */,
 				9D3C5DAB2A2CA872003695FD /* FileManager+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,6 +424,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9D3C5DBC2A2CCC72003695FD /* FilesDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9D3C5DBD2A2CCC72003695FD /* FilesDataModel.xcdatamodel */,
+			);
+			currentVersion = 9D3C5DBD2A2CCC72003695FD /* FilesDataModel.xcdatamodel */;
+			path = FilesDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 9D9B897D2A2C30DB00C41F0F /* Project object */;
 }

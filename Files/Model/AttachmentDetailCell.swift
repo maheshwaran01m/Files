@@ -25,10 +25,9 @@ class AttachmentDetailCell: UITableViewCell {
   
   // MARK: - Configure View
   
-  func configureView() {
-    self.textLabel?.text = "Hello"
-    self.detailTextLabel?.text = "welcome"
+  func configureView(using attachmentItem: AttachmentItem) {
+    self.textLabel?.text = attachmentItem.fileName
+    self.detailTextLabel?.text = attachmentItem.privateID
     self.detailTextLabel?.textColor = .gray
-    self.accessoryType = .checkmark
   }
 }
