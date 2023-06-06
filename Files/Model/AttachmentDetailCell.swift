@@ -20,14 +20,16 @@ class AttachmentDetailCell: UITableViewCell {
   }
   
   required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: coder)
   }
   
   // MARK: - Configure View
   
   func configureView(using attachmentItem: AttachmentItem) {
     self.textLabel?.text = attachmentItem.fileName
-    self.detailTextLabel?.text = attachmentItem.privateID
-    self.detailTextLabel?.textColor = .gray
+    self.imageView?.image = attachmentItem.thumbImage
+    self.imageView?.contentMode = .scaleAspectFill
+    self.imageView?.layer.cornerRadius = 10 //self.frame.height/2
+    self.imageView?.clipsToBounds = true
   }
 }

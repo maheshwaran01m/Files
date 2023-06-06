@@ -354,7 +354,6 @@
 				DEVELOPMENT_TEAM = 678BAJ4594;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Files/MainResources/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow access to get photos from library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -383,7 +382,6 @@
 				DEVELOPMENT_TEAM = 678BAJ4594;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Files/MainResources/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Please allow access to get photos from library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

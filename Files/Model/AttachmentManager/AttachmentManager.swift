@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import MobileCoreServices
+import PhotosUI
 
 protocol AttachmentDelegate: AnyObject {
   func attachmentManager(_ attachmentItem: AttachmentItem)
@@ -28,7 +29,7 @@ class AttachmentManager: NSObject {
   
   // MARK: - Attachment Options
   
-  func openActionSheet(in vc: UIViewController) {
+  func openActionSheet(in vc: UIViewController, sender: UIBarButtonItem? = nil) {
     
     let actionSheet = UIAlertController(
       title: "Choose an attachment source", message: nil, preferredStyle: .actionSheet)
@@ -45,15 +46,28 @@ class AttachmentManager: NSObject {
     let actions = [librayOption, documentOption, cancelAction]
     actions.forEach({ actionSheet.addAction($0) })
     vc.modalPresentationStyle = .fullScreen
+    if let popOver = actionSheet.popoverPresentationController {
+      vc.modalPresentationStyle = .popover
+      popOver.sourceView = vc.view
+      popOver.barButtonItem = sender
+      popOver.sourceRect = CGRect(x: vc.view.bounds.midX,
+                                            y: vc.view.bounds.midY,
+                                            width: 0, height: 0)
+    }
     vc.present(actionSheet, animated: true)
     presentingVC = vc
   }
   
   private func presentPhotoPicker() {
+    /* ImagePicker
     let imagePicker = UIImagePickerController()
     imagePicker.delegate = self
     imagePicker.sourceType = .photoLibrary
     presentingVC?.present(imagePicker, animated: true)
+    */
+    let picker = PHPickerViewController(configuration: PHPickerConfiguration())
+    picker.delegate = self
+    presentingVC?.present(picker, animated: true)
   }
   private func presentDocumentPicker() {
     let type: [UTType] = [.pdf, .png, .jpeg, .video, .movie, .text,
@@ -62,6 +76,35 @@ class AttachmentManager: NSObject {
     documentPicker.delegate = self
     documentPicker.allowsMultipleSelection = false
     presentingVC?.present(documentPicker, animated: true)
+  }
+}
+
+extension AttachmentManager: PHPickerViewControllerDelegate {
+  
+  func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+    picker.dismiss(animated: true)
+    guard let result = results.first else { return }
+    
+    let provider = result.itemProvider
+    
+    if provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
+      provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { [weak self] url, error in
+        guard error == nil else { return }
+        DispatchQueue.main.async {
+          self?.handleAttachedFile(at: url, fileType: .movie)
+        }
+      }
+    } else if provider.canLoadObject(ofClass: UIImage.self) {
+      provider.loadObject(ofClass: UIImage.self) { [weak self] photo, error in
+        guard error == nil else { return }
+        DispatchQueue.main.async {
+          let image = photo as? UIImage
+          self?.handleAttachedImage(image)
+        }
+      }
+    } else if provider.canLoadObject(ofClass: PHLivePhoto.self) {
+      // Live Photo
+    }
   }
 }
 
@@ -108,7 +151,7 @@ extension AttachmentManager: UIDocumentPickerDelegate {
     _ image: UIImage?, fileName name: String? = nil,
     privateID: String = UUID().uuidString) -> AttachmentItem? {
       
-      let parentFolder = "/attachments/\(privateID)"
+      let parentFolder = "attachments/\(privateID)"
       guard let image, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
@@ -126,7 +169,7 @@ extension AttachmentManager: UIDocumentPickerDelegate {
     fileURL url: URL?, fileName name: String? = nil,
     privateID: String = UUID().uuidString) -> AttachmentItem? {
       
-      let parentFolder = "/attachments/\(privateID)"
+      let parentFolder = "attachments/\(privateID)"
       guard let url, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
@@ -142,32 +185,36 @@ extension AttachmentManager: UIDocumentPickerDelegate {
       return AttachmentItem(privateID: privateID, fileName: fileName,
                             fileURL: finalPath,
                             fileExtension: url.pathExtension)
-  }
+    }
   
   private func getCustomFileName(onCompletion: ((String?) -> Void)? = nil) {
-      
-      let alert = UIAlertController(title: "Attachment Details",
-                                    message: "",
-                                    preferredStyle: .alert)
-      alert.addTextField { textField in
-        textField.placeholder = "File Name"
-        let imageView = UIImageView(image: UIImage(systemName: "square.and.pencil"))
-        imageView.tintColor = .gray
-        textField.rightView = imageView
-        textField.rightViewMode = .always
-      }
-      let doneButton = UIAlertAction(title: "Done",
-                                     style: .default, handler: { [weak alert] _ in
-        guard let name = alert?.textFields?[0].text, !name.isEmpty else {
-          alert?.textFields?[0].resignFirstResponder()
-          onCompletion?(nil)
-          return
-        }
-        alert?.textFields?[0].resignFirstResponder()
-        onCompletion?(name)
-      })
-      alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-      alert.addAction(doneButton)
-    presentingVC?.present(alert, animated: true, completion: nil)
+    
+    let alert = UIAlertController(title: "Attachment Details",
+                                  message: "",
+                                  preferredStyle: .alert)
+    alert.addTextField { textField in
+      textField.placeholder = "File Name"
+      let imageView = UIImageView(image: UIImage(systemName: "square.and.pencil"))
+      imageView.tintColor = .gray
+      textField.rightView = imageView
+      textField.rightViewMode = .always
     }
+    let doneButton = UIAlertAction(title: "Done",
+                                   style: .default, handler: { [weak alert] _ in
+      guard let name = alert?.textFields?[0].text, !name.isEmpty else {
+        alert?.textFields?[0].resignFirstResponder()
+        onCompletion?(nil)
+        return
+      }
+      alert?.textFields?[0].resignFirstResponder()
+      onCompletion?(name)
+    })
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+    alert.addAction(doneButton)
+    presentingVC?.modalPresentationStyle = .fullScreen
+    if let popOver = alert.popoverPresentationController {
+      popOver.sourceView = presentingVC?.view
+    }
+    presentingVC?.present(alert, animated: true, completion: nil)
+  }
 }

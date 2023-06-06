@@ -24,7 +24,7 @@ class AttachmentListViewModel: NSObject {
   private var predicate: NSPredicate? {
     var fetchPredicates: [NSPredicate] = []
     fetchPredicates.append(NSPredicate(format: "privateID != nil"))
-
+    
     if let searchPredicate {
       fetchPredicates.append(searchPredicate)
     }
@@ -76,6 +76,8 @@ class AttachmentListViewModel: NSObject {
       }
       let fetchedStudent = self.moc.object(with: attachment.objectID)
       self.moc.delete(fetchedStudent)
+      let attachmentItem = self.attachmentItem.first(where: { $0.privateID == privateID } )
+      attachmentItem?.deleteFolder()
       self.moc.saveContext()
       print("Deleted Attachment: \(attachment.fileName ?? "")")
       onCompletion?()
@@ -94,7 +96,7 @@ class AttachmentListViewModel: NSObject {
       AttachmentItem(privateID: $0.privateID,
                      fileName: $0.fileName,
                      fileURL: $0.fileURL, fileExtension: $0.fileExtension,
-                     thumbImage: UIImage(systemName: "star"))
+                     thumbImage: UIImage(systemName: "photo"))
     })
   }
   
