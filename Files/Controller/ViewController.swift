@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     $0.estimatedRowHeight = UITableView.automaticDimension
     $0.tableFooterView = UIView()
     $0.sectionHeaderTopPadding = 0.0
+    $0.estimatedRowHeight = UITableView.automaticDimension
     return $0
   }(UITableView(frame: .zero, style: .insetGrouped))
   
@@ -76,7 +77,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentDetailCell", for: indexPath) as? AttachmentDetailCell else {
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "AttachmentDetailCell",
+                                                   for: indexPath) as? AttachmentDetailCell else {
       return UITableViewCell()
     }
     cell.configureView(using: viewModel.attachmentItem[indexPath.row])
@@ -85,6 +87,15 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: false)
+    guard self.presentedViewController == nil,
+          let index = viewModel.attachmentItem.firstIndex(where: {
+            $0.privateID == viewModel.attachmentItem[indexPath.row].privateID
+          }) else { return }
+    let previewController = AttachmentPreviewController(attachmentItems: viewModel.attachmentItem)
+    DispatchQueue.main.async {
+      self.present(previewController, animated: true)
+      previewController.currentPreviewItemIndex = index
+    }
   }
   
   func tableView(_ tableView: UITableView,

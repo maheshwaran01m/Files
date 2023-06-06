@@ -13,6 +13,7 @@
 		9D3C5DBB2A2CCC39003695FD /* AttachmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DBA2A2CCC39003695FD /* AttachmentListViewModel.swift */; };
 		9D3C5DBE2A2CCC72003695FD /* FilesDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DBC2A2CCC72003695FD /* FilesDataModel.xcdatamodeld */; };
 		9D3C5DC12A2CCD85003695FD /* CoreDataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DC02A2CCD85003695FD /* CoreDataServices.swift */; };
+		9D3C5DC32A2F385E003695FD /* AttachmentPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3C5DC22A2F385E003695FD /* AttachmentPreviewController.swift */; };
 		9D9B89892A2C30DB00C41F0F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B89882A2C30DB00C41F0F /* AppDelegate.swift */; };
 		9D9B898B2A2C30DB00C41F0F /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B898A2A2C30DB00C41F0F /* SceneDelegate.swift */; };
 		9D9B898D2A2C30DB00C41F0F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B898C2A2C30DB00C41F0F /* ViewController.swift */; };
@@ -28,6 +29,7 @@
 		9D3C5DBA2A2CCC39003695FD /* AttachmentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentListViewModel.swift; sourceTree = "<group>"; };
 		9D3C5DBD2A2CCC72003695FD /* FilesDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FilesDataModel.xcdatamodel; sourceTree = "<group>"; };
 		9D3C5DC02A2CCD85003695FD /* CoreDataServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataServices.swift; sourceTree = "<group>"; };
+		9D3C5DC22A2F385E003695FD /* AttachmentPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentPreviewController.swift; sourceTree = "<group>"; };
 		9D9B89852A2C30DB00C41F0F /* Files.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Files.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D9B89882A2C30DB00C41F0F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D9B898A2A2C30DB00C41F0F /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				9D9B898C2A2C30DB00C41F0F /* ViewController.swift */,
+				9D3C5DC22A2F385E003695FD /* AttachmentPreviewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 				9D3C5DAE2A2CC4EB003695FD /* AttachmentManager.swift in Sources */,
 				9D9B898B2A2C30DB00C41F0F /* SceneDelegate.swift in Sources */,
 				9D9B89A02A2C318F00C41F0F /* AttachmentItem.swift in Sources */,
+				9D3C5DC32A2F385E003695FD /* AttachmentPreviewController.swift in Sources */,
 				9D3C5DBE2A2CCC72003695FD /* FilesDataModel.xcdatamodeld in Sources */,
 				9D3C5DC12A2CCD85003695FD /* CoreDataServices.swift in Sources */,
 				9D3C5DAB2A2CA872003695FD /* FileManager+Extension.swift in Sources */,
