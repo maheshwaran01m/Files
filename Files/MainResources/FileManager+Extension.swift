@@ -12,9 +12,12 @@ extension FileManager {
   
   // MARK: - Create Folder
   
-  func makePath(using path: String) -> URL? {
-    let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-    return url?.appendingPathComponent(path)
+  var documentDirectory: URL {
+    return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+  }
+  
+  func makePath(using path: String) -> URL {
+    return documentDirectory.appendingPathComponent(path)
   }
   
   func isDirectoryExist(at url: URL) -> Bool {
@@ -24,7 +27,7 @@ extension FileManager {
   }
   
   func createDirectory(name: String) -> URL? {
-    guard let url = makePath(using: name) else { return nil }
+    let url = makePath(using: name)
     do {
       try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     } catch {
@@ -33,13 +36,8 @@ extension FileManager {
     return url
   }
   
-  // MARK: - Read
-  
-  func isFileExist(at url: URL) -> Bool {
-    return fileExists(atPath: url.path)
-  }
-  
   // MARK: - Write
+  
   func writeData(_ data: Data?, filePath: URL?) {
     guard let data, let filePath else {
       print("Invalid url or filePath")
@@ -55,7 +53,7 @@ extension FileManager {
   // MARK: - Delete Files
   
   func deleteFile(at url: URL) {
-    guard self.isFileExist(at: url) else { return }
+    guard self.fileExists(atPath: url.path) else { return }
     do {
       try FileManager.default.removeItem(at: url)
     } catch {
@@ -64,7 +62,7 @@ extension FileManager {
   }
   
   func deleteFolder(at url: URL) {
-    guard self.isFileExist(at: url) else { return }
+    guard self.fileExists(atPath: url.path) else { return }
     do {
       try FileManager.default.removeItem(at: url.deletingLastPathComponent())
     } catch {

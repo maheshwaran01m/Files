@@ -111,7 +111,7 @@ extension ViewController: AttachmentDelegate {
   @objc private func createNewAttachment(_ sender: UIBarButtonItem) {
     attachmentManager = AttachmentManager(delegate: self)
     attachmentManager?.delegate = self
-    attachmentManager?.openActionSheet(in: self)
+    attachmentManager?.openActionSheet(in: self, sender: sender)
   }
   
   func attachmentManager(_ attachmentItem: AttachmentItem) {
