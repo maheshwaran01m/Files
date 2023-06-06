@@ -14,6 +14,7 @@ class ViewController: UIViewController {
   lazy var tableView: UITableView = {
     $0.estimatedRowHeight = UITableView.automaticDimension
     $0.tableFooterView = UIView()
+    $0.backgroundColor = .systemGroupedBackground
     $0.sectionHeaderTopPadding = 0.0
     $0.estimatedRowHeight = UITableView.automaticDimension
     return $0
