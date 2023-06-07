@@ -83,6 +83,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
       return UITableViewCell()
     }
     cell.configureView(using: viewModel.attachmentItem[indexPath.row])
+    cell.selectionStyle = .none
     return cell
   }
   
