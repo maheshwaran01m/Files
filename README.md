@@ -9,14 +9,14 @@ Store Attachments in FileManager
 
 `Add New Attachment`
 
-https://github.com/maheshwaran01m/Files/assets/102943217/17fccdfd-9bb0-4282-acad-76f8c4eb8f39
+<img width="475" alt="Screenshot 2023-06-25 at 10 44 11" src="https://github.com/maheshwaran01m/Files/assets/102943217/f88cb1c1-d2bc-48b6-ba37-1c6a717cd371">
 
- 
  `Delete Files both coreData and FileManager`
 
-https://github.com/maheshwaran01m/Files/assets/102943217/14f63a5d-3acf-4c06-88fb-a34f2378f13b
+<img width="475" alt="Screenshot 2023-06-25 at 10 44 24" src="https://github.com/maheshwaran01m/Files/assets/102943217/90e2c38e-d8b7-424f-9f75-bb01ca317fd2">
+
 
 `File Previews`
 
-https://github.com/maheshwaran01m/Files/assets/102943217/3e4ac2e6-a10d-4b59-86be-fd9f814635cd
+https://github.com/maheshwaran01m/Files/assets/102943217/31e7c320-2ab5-4fc1-aa74-1fa533d07a8d
 
