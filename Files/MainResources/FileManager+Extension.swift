@@ -45,6 +45,7 @@ extension FileManager {
     }
     do {
       try data.write(to: filePath)
+      debugPrint("Saved attachment: \(filePath.path)")
     } catch {
       print("Failed to save file in File Manager")
     }
