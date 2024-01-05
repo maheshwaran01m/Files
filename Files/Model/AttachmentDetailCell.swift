@@ -24,7 +24,7 @@ class AttachmentDetailCell: UITableViewCell {
   private lazy var imageDetailView: UIImageView = {
     $0.contentMode = .scaleToFill
     $0.translatesAutoresizingMaskIntoConstraints = false
-    $0.layer.cornerRadius = self.frame.height/2
+    $0.layer.cornerRadius = 16
     $0.layer.borderWidth = 0.7
     $0.layer.borderColor = UIColor.white.cgColor
     $0.clipsToBounds = true

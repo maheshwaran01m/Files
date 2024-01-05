@@ -127,9 +127,25 @@ extension ViewController: AttachmentDelegate {
     attachmentManager?.openActionSheet(in: self, sender: sender)
   }
   
-  func attachmentManager(_ attachmentItem: AttachmentItem) {
-    viewModel.createAttachmentItem(attachmentItem) {
-      self.tableView.reloadData()
+  func attachmentManager(_ attachmentItem: AttachmentItem, type: AttachmentType) {
+    if type == .image {
+      let vc = QuickLookEditorVC(for: attachmentItem)
+      vc.saveDelegate = self
+      let navigationVC = UINavigationController(rootViewController: vc)
+      present(navigationVC, animated: true)
+    } else {
+      viewModel.createAttachmentItem(attachmentItem) { [weak self] in
+        self?.tableView.reloadData()
+      }
+    }
+  }
+}
+
+extension ViewController: QuickLookEditorDelegate {
+  
+  func save(_ item: AttachmentItem) {
+    viewModel.createAttachmentItem(item) { [weak self] in
+      self?.tableView.reloadData()
     }
   }
 }

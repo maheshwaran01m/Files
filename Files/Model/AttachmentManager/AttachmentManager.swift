@@ -12,7 +12,11 @@ import MobileCoreServices
 import PhotosUI
 
 protocol AttachmentDelegate: AnyObject {
-  func attachmentManager(_ attachmentItem: AttachmentItem)
+  func attachmentManager(_ attachmentItem: AttachmentItem, type: AttachmentType)
+}
+
+enum AttachmentType {
+  case image, file
 }
 
 class AttachmentManager: NSObject {
@@ -124,7 +128,7 @@ extension AttachmentManager: UIImagePickerControllerDelegate, UINavigationContro
     presentingVC?.dismiss(animated: true)
     getCustomFileName { [weak self] fileName in
       if let attachmentItem = self?.saveImage(image, fileName: fileName) {
-        self?.delegate?.attachmentManager(attachmentItem)
+        self?.delegate?.attachmentManager(attachmentItem, type: .image)
       }
     }
   }
@@ -142,7 +146,7 @@ extension AttachmentManager: UIDocumentPickerDelegate {
     guard let fileUrl else { return }
     getCustomFileName { [weak self] fileName in
       if let attachmentItem = self?.saveFile(fileURL: fileUrl, fileName: fileName) {
-        self?.delegate?.attachmentManager(attachmentItem)
+        self?.delegate?.attachmentManager(attachmentItem,  type: .file)
       }
     }
   }
@@ -155,12 +159,12 @@ extension AttachmentManager: UIDocumentPickerDelegate {
       guard let image, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
-      let finalPath = folderPath.appendingPathComponent(name ?? "-").appendingPathExtension("jpg")
+      let finalPath = folderPath.appendingPathComponent(name ?? "Image").appendingPathExtension("jpg")
       let imageData = image.jpegData(compressionQuality: 0.8)
       
       FileManager.default.writeData(imageData, filePath: finalPath)
       
-      return AttachmentItem(privateID: privateID, fileName: name,
+      return AttachmentItem(privateID: privateID, fileName: name ?? "Image",
                             fileURL: finalPath,
                             fileExtension: "jpg")
     }
@@ -173,9 +177,9 @@ extension AttachmentManager: UIDocumentPickerDelegate {
       guard let url, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
-      
-      let fileName = name ?? url.deletingPathExtension().lastPathComponent
-      let fileNameWithExtension = fileName + "." + url.pathExtension
+      let fileNameEmpty = name?.isEmpty ?? false
+      let fileName = !fileNameEmpty ? name : url.deletingPathExtension().lastPathComponent
+      let fileNameWithExtension = (fileName ?? "") + "." + url.pathExtension
       
       let finalPath = folderPath.appendingPathComponent(fileNameWithExtension)
       

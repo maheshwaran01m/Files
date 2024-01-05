@@ -20,6 +20,7 @@
 		9D9B89922A2C30DB00C41F0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D9B89912A2C30DB00C41F0F /* Assets.xcassets */; };
 		9D9B89952A2C30DB00C41F0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D9B89932A2C30DB00C41F0F /* LaunchScreen.storyboard */; };
 		9D9B89A02A2C318F00C41F0F /* AttachmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B899F2A2C318F00C41F0F /* AttachmentItem.swift */; };
+		9DC993AF2B47A5D00066E0AF /* QuickLookEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		9D9B89942A2C30DB00C41F0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D9B89962A2C30DB00C41F0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D9B899F2A2C318F00C41F0F /* AttachmentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentItem.swift; sourceTree = "<group>"; };
+		9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookEditorVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				9D3C5DAD2A2CC4EB003695FD /* AttachmentManager.swift */,
+				9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */,
 			);
 			path = AttachmentManager;
 			sourceTree = "<group>";
@@ -206,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DC993AF2B47A5D00066E0AF /* QuickLookEditorVC.swift in Sources */,
 				9D9B898D2A2C30DB00C41F0F /* ViewController.swift in Sources */,
 				9D3C5DBB2A2CCC39003695FD /* AttachmentListViewModel.swift in Sources */,
 				9D3C5DB12A2CC99B003695FD /* AttachmentDetailCell.swift in Sources */,
