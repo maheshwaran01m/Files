@@ -122,7 +122,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
 extension ViewController: AttachmentDelegate {
   
   @objc private func createNewAttachment(_ sender: UIBarButtonItem) {
-    attachmentManager = AttachmentManager(delegate: self)
+    attachmentManager = AttachmentManager(directoryPath: viewModel.directoryPath, delegate: self)
     attachmentManager?.delegate = self
     attachmentManager?.openActionSheet(in: self, sender: sender)
   }
@@ -134,9 +134,22 @@ extension ViewController: AttachmentDelegate {
       let navigationVC = UINavigationController(rootViewController: vc)
       present(navigationVC, animated: true)
     } else {
-      viewModel.createAttachmentItem(attachmentItem) { [weak self] in
-        self?.tableView.reloadData()
+      getCustomFileName { [weak self] fileName in
+        self?.addAttachmentItem(attachmentItem, for: fileName)
       }
+    }
+  }
+  
+  func addAttachmentItem(_ attachmentItem: AttachmentItem, for fileName: String? = nil) {
+    var finalAttachmentItem: AttachmentItem
+    
+    if let fileName, let newAttachmentItem = attachmentItem.move(fileName) {
+      finalAttachmentItem = newAttachmentItem
+    } else {
+      finalAttachmentItem = attachmentItem
+    }
+    viewModel.createAttachmentItem(finalAttachmentItem) { [weak self] in
+      self?.tableView.reloadData()
     }
   }
 }
@@ -144,8 +157,8 @@ extension ViewController: AttachmentDelegate {
 extension ViewController: QuickLookEditorDelegate {
   
   func save(_ item: AttachmentItem) {
-    viewModel.createAttachmentItem(item) { [weak self] in
-      self?.tableView.reloadData()
+    getCustomFileName { [weak self] fileName in
+      self?.addAttachmentItem(item, for: fileName)
     }
   }
 }

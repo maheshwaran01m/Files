@@ -21,6 +21,7 @@
 		9D9B89952A2C30DB00C41F0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D9B89932A2C30DB00C41F0F /* LaunchScreen.storyboard */; };
 		9D9B89A02A2C318F00C41F0F /* AttachmentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9B899F2A2C318F00C41F0F /* AttachmentItem.swift */; };
 		9DC993AF2B47A5D00066E0AF /* QuickLookEditorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */; };
+		9DF5BE292B48F79F00A0CCBD /* AttachmentFileNameAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF5BE282B48F79F00A0CCBD /* AttachmentFileNameAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		9D9B89962A2C30DB00C41F0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D9B899F2A2C318F00C41F0F /* AttachmentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentItem.swift; sourceTree = "<group>"; };
 		9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookEditorVC.swift; sourceTree = "<group>"; };
+		9DF5BE282B48F79F00A0CCBD /* AttachmentFileNameAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentFileNameAlert.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			children = (
 				9D3C5DAD2A2CC4EB003695FD /* AttachmentManager.swift */,
 				9DC993AE2B47A5D00066E0AF /* QuickLookEditorVC.swift */,
+				9DF5BE282B48F79F00A0CCBD /* AttachmentFileNameAlert.swift */,
 			);
 			path = AttachmentManager;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				9D9B89A02A2C318F00C41F0F /* AttachmentItem.swift in Sources */,
 				9D3C5DC32A2F385E003695FD /* AttachmentPreviewController.swift in Sources */,
 				9D3C5DBE2A2CCC72003695FD /* FilesDataModel.xcdatamodeld in Sources */,
+				9DF5BE292B48F79F00A0CCBD /* AttachmentFileNameAlert.swift in Sources */,
 				9D3C5DC12A2CCD85003695FD /* CoreDataServices.swift in Sources */,
 				9D3C5DAB2A2CA872003695FD /* FileManager+Extension.swift in Sources */,
 			);

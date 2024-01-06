@@ -25,9 +25,12 @@ class AttachmentManager: NSObject {
   
   private var presentingVC: UIViewController?
   
+  private let directoryPath: String
+  
   // MARK: - Initializer
   
-  init(delegate: AttachmentDelegate? = nil) {
+  init(directoryPath: String = "Files", delegate: AttachmentDelegate? = nil) {
+    self.directoryPath = directoryPath
     self.delegate = delegate
   }
   
@@ -55,8 +58,8 @@ class AttachmentManager: NSObject {
       popOver.sourceView = vc.view
       popOver.barButtonItem = sender
       popOver.sourceRect = CGRect(x: vc.view.bounds.midX,
-                                            y: vc.view.bounds.midY,
-                                            width: 0, height: 0)
+                                  y: vc.view.bounds.midY,
+                                  width: 0, height: 0)
     }
     vc.present(actionSheet, animated: true)
     presentingVC = vc
@@ -64,11 +67,11 @@ class AttachmentManager: NSObject {
   
   private func presentPhotoPicker() {
     /* ImagePicker
-    let imagePicker = UIImagePickerController()
-    imagePicker.delegate = self
-    imagePicker.sourceType = .photoLibrary
-    presentingVC?.present(imagePicker, animated: true)
-    */
+     let imagePicker = UIImagePickerController()
+     imagePicker.delegate = self
+     imagePicker.sourceType = .photoLibrary
+     presentingVC?.present(imagePicker, animated: true)
+     */
     let picker = PHPickerViewController(configuration: PHPickerConfiguration())
     picker.delegate = self
     presentingVC?.present(picker, animated: true)
@@ -95,7 +98,7 @@ extension AttachmentManager: PHPickerViewControllerDelegate {
       provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { [weak self] url, error in
         guard error == nil else { return }
         DispatchQueue.main.async {
-          self?.handleAttachedFile(at: url, fileType: .movie)
+          self?.handleAttachedFile(at: url)
         }
       }
     } else if provider.canLoadObject(ofClass: UIImage.self) {
@@ -118,7 +121,7 @@ extension AttachmentManager: UIImagePickerControllerDelegate, UINavigationContro
                              didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
     presentingVC?.dismiss(animated: true)
     if let videoURL = info[.mediaURL] as? URL {
-      self.handleAttachedFile(at: videoURL, fileType: .video)
+      self.handleAttachedFile(at: videoURL)
     } else if let image = info[.originalImage] as? UIImage {
       self.handleAttachedImage(image)
     }
@@ -126,11 +129,9 @@ extension AttachmentManager: UIImagePickerControllerDelegate, UINavigationContro
   
   private func handleAttachedImage(_ image: UIImage?, imageName: String? = nil) {
     presentingVC?.dismiss(animated: true)
-    getCustomFileName { [weak self] fileName in
-      if let attachmentItem = self?.saveImage(image, fileName: fileName) {
-        self?.delegate?.attachmentManager(attachmentItem, type: .image)
-      }
-    }
+    
+    guard let image, let attachmentItem = saveImage(image) else { return }
+    delegate?.attachmentManager(attachmentItem,  type: .image)
   }
 }
 
@@ -138,87 +139,67 @@ extension AttachmentManager: UIDocumentPickerDelegate {
   
   func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     presentingVC?.dismiss(animated: true)
-    handleAttachedFile(at: urls.first, fileType: .png)
+    handleAttachedFile(at: urls.first)
   }
   
-  private func handleAttachedFile(at fileUrl: URL?, fileName: String? = nil,
-                                  fileType: UTType) {
-    guard let fileUrl else { return }
-    getCustomFileName { [weak self] fileName in
-      if let attachmentItem = self?.saveFile(fileURL: fileUrl, fileName: fileName) {
-        self?.delegate?.attachmentManager(attachmentItem,  type: .file)
-      }
-    }
+  private func handleAttachedFile(at fileUrl: URL?, fileName: String? = nil) {
+    guard let fileUrl, let attachmentItem = saveFile(fileURL: fileUrl) else { return }
+    delegate?.attachmentManager(attachmentItem,  type: .file)
   }
   
   private func saveImage(
-    _ image: UIImage?, fileName name: String? = nil,
+    _ image: UIImage, fileName name: String? = nil,
     privateID: String = UUID().uuidString) -> AttachmentItem? {
       
-      let parentFolder = "attachments/\(privateID)"
-      guard let image, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
+      let parentFolder = "\(directoryPath)/attachments/\(privateID)"
+      guard let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
-      let finalPath = folderPath.appendingPathComponent(name ?? "Image").appendingPathExtension("jpg")
+      let fileName = (name ?? "image") + ".jpeg"
+      let finalPath = folderPath.appendingPathComponent(fileName)
       let imageData = image.jpegData(compressionQuality: 0.8)
       
       FileManager.default.writeData(imageData, filePath: finalPath)
       
-      return AttachmentItem(privateID: privateID, fileName: name ?? "Image",
-                            fileURL: finalPath,
-                            fileExtension: "jpg")
+      return .init(privateID: privateID, fileName: fileName, fileURL: finalPath,
+                   fileExtension: "jpg", directoryPath: directoryPath)
     }
   
   private func saveFile(
-    fileURL url: URL?, fileName name: String? = nil,
+    fileURL url: URL, fileName name: String? = nil,
     privateID: String = UUID().uuidString) -> AttachmentItem? {
       
-      let parentFolder = "attachments/\(privateID)"
-      guard let url, let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
+      let parentFolder = "\(directoryPath)/attachments/\(privateID)"
+      guard let folderPath = FileManager.default.createDirectory(name: parentFolder) else {
         return nil
       }
-      let fileNameEmpty = name?.isEmpty ?? false
-      let fileName = !fileNameEmpty ? name : url.deletingPathExtension().lastPathComponent
-      let fileNameWithExtension = (fileName ?? "") + "." + url.pathExtension
+      let fileName = name ?? url.deletingPathExtension().lastPathComponent
+      let extn = url.pathExtension.lowercased()
+      let fileNameWithExtension = fileName + "." + extn
       
       let finalPath = folderPath.appendingPathComponent(fileNameWithExtension)
       
-      let fileData = try? Data(contentsOf: url)
-      FileManager.default.writeData(fileData, filePath: finalPath)
+      do {
+        let fileData = try Data(contentsOf: url)
+        FileManager.default.writeData(fileData, filePath: finalPath)
+      } catch {
+        print("Failed to convert data from URL")
+      }
       
-      return AttachmentItem(privateID: privateID, fileName: fileName,
-                            fileURL: finalPath,
-                            fileExtension: url.pathExtension)
+      return .init(privateID: privateID, fileName: fileNameWithExtension,fileURL: finalPath,
+                   fileExtension: url.pathExtension, directoryPath: directoryPath)
     }
   
-  private func getCustomFileName(onCompletion: ((String?) -> Void)? = nil) {
+  func generateAttachmentItem(for url: URL) -> AttachmentItem? {
+    let privateID = url.deletingPathExtension().deletingLastPathComponent().lastPathComponent
+    let fileName = url.deletingPathExtension().lastPathComponent
+    let extn = url.pathExtension.lowercased()
     
-    let alert = UIAlertController(title: "Attachment Details",
-                                  message: "",
-                                  preferredStyle: .alert)
-    alert.addTextField { textField in
-      textField.placeholder = "File Name"
-      let imageView = UIImageView(image: UIImage(systemName: "square.and.pencil"))
-      imageView.tintColor = .gray
-      textField.rightView = imageView
-      textField.rightViewMode = .always
-    }
-    let doneButton = UIAlertAction(title: "Done",
-                                   style: .default, handler: { [weak alert] _ in
-      guard let name = alert?.textFields?[0].text, !name.isEmpty else {
-        alert?.textFields?[0].resignFirstResponder()
-        onCompletion?(nil)
-        return
-      }
-      alert?.textFields?[0].resignFirstResponder()
-      onCompletion?(name)
-    })
-    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-    alert.addAction(doneButton)
-    presentingVC?.modalPresentationStyle = .fullScreen
-    if let popOver = alert.popoverPresentationController {
-      popOver.sourceView = presentingVC?.view
-    }
-    presentingVC?.present(alert, animated: true, completion: nil)
+    return .init(
+      privateID: privateID,
+      fileName: fileName + ".\(extn)",
+      fileURL: url,
+      fileExtension: extn,
+      directoryPath: directoryPath)
   }
 }
