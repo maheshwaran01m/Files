@@ -18,5 +18,8 @@ Store Attachments in FileManager
 
 `File Previews`
 
-https://github.com/maheshwaran01m/Files/assets/102943217/31e7c320-2ab5-4fc1-aa74-1fa533d07a8d
+ https://github.com/maheshwaran01m/Files/assets/102943217/31e7c320-2ab5-4fc1-aa74-1fa533d07a8d
 
+ `Gif:`
+
+![Simulator Screen Recording - iPhone 15 Pro - 2024-01-06 at 09 15 46](https://github.com/maheshwaran01m/Files/assets/102943217/3e26863f-c938-4259-97fc-3aad5ca6714d)
