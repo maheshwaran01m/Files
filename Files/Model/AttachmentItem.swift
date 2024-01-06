@@ -14,16 +14,19 @@ class AttachmentItem {
   var fileURL: URL?
   var fileExtension: String?
   var thumbImage: UIImage?
+  var directoryPath: String
   
   init(privateID: String? = nil,
        fileName: String? = nil,
        fileURL: URL? = nil,
        fileExtension: String? = nil,
+       directoryPath: String,
        thumbImage: UIImage? = nil) {
     self.privateID = privateID
     self.fileName = fileName
     self.fileURL = fileURL
     self.fileExtension = fileExtension
+    self.directoryPath = directoryPath
     self.thumbImage = getPlaceholderImage ?? UIImage(systemName: "photo")
   }
 }
@@ -41,8 +44,13 @@ extension AttachmentItem {
   
   var filePath: String? {
     guard let privateID, let fileName, let fileExtension else { return nil }
-    let finalPath = "/attachments/" + privateID + "/" + fileName + "." + fileExtension
+    let finalPath = "/\(directoryPath)/attachments/" + privateID + "/" + fileName
     return finalPath
+  }
+  
+  var isSavedLocally: Bool {
+    guard let localPath else { return false }
+    return FileManager.default.fileExists(atPath: localPath)
   }
   
   var getPlaceholderImage: UIImage? {
@@ -65,6 +73,36 @@ extension AttachmentItem {
       image = UIImage(systemName: "photo")
     }
     return image
+  }
+  
+  // MARK: - Move
+  
+  func move(_ fileName: String) -> Self? {
+    if let localPath {
+      let url = URL(fileURLWithPath: localPath)
+      let extn = url.pathExtension
+      let oldURL = url.deletingLastPathComponent().path + "/"
+      let fileName = fileName + "." + extn
+      let newFilePath = oldURL + fileName
+      
+      do {
+        try FileManager.default.moveItem(atPath: url.path, toPath: newFilePath)
+        
+        if FileManager.default.fileExists(atPath: newFilePath) {
+          let attachment = self
+          attachment.fileName = fileName
+          attachment.fileURL = URL(fileURLWithPath: newFilePath)
+          return attachment
+        }
+      } catch {
+        print("""
+              Failed to move for URL: \(url),
+              Reason: \(error.localizedDescription)
+              """)
+        return nil
+      }
+    }
+    return nil
   }
   
   // MARK: - Delete Folder

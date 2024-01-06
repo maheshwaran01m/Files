@@ -15,6 +15,8 @@ class AttachmentListViewModel: NSObject {
   
   private var attachment: [Attachment]?
   
+  let directoryPath = "Files"
+  
   private var fetchResultsController: NSFetchedResultsController<Attachment>?
   private var searchPredicate: NSPredicate?
   private var sortDescriptors: [NSSortDescriptor]?
@@ -95,7 +97,7 @@ class AttachmentListViewModel: NSObject {
     attachmentItem = fetchAttachmentItem.compactMap({
       AttachmentItem(privateID: $0.privateID,
                      fileName: $0.fileName,
-                     fileURL: $0.fileURL, fileExtension: $0.fileExtension,
+                     fileURL: $0.fileURL, fileExtension: $0.fileExtension, directoryPath: directoryPath,
                      thumbImage: UIImage(systemName: "photo"))
     })
   }

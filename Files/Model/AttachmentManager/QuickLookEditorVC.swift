@@ -106,10 +106,12 @@ extension QuickLookEditorVC {
   private func addAttachmentItem() {
     guard !isFromDiscard else { return }
     deleteAttachmentFile()
-    if let item {
-      saveDelegate?.save(item)
+    navigationController?.dismiss(animated: true) { [weak self] in
+      guard let self else { return }
+      if let item {
+        saveDelegate?.save(item)
+      }
     }
-    dismissVC()
   }
   
   private func dismissVC() {
