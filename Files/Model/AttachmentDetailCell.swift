@@ -63,10 +63,10 @@ class AttachmentDetailCell: UITableViewCell {
     containerView.addSubview(titleLabel)
     
     NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
-      containerView.leftAnchor.constraint(equalTo: self.contentView.leftAnchor, constant: 5),
-      containerView.rightAnchor.constraint(equalTo: self.contentView.rightAnchor, constant: -5),
-      containerView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
+      containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+      containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       
       imageDetailView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
       imageDetailView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 5),
