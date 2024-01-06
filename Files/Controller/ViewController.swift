@@ -12,7 +12,6 @@ class ViewController: UIViewController {
   // MARK: - Outlets
   
   lazy var tableView: UITableView = {
-    $0.estimatedRowHeight = UITableView.automaticDimension
     $0.tableFooterView = UIView()
     $0.backgroundColor = .systemGroupedBackground
     $0.sectionHeaderTopPadding = 0.0
@@ -49,10 +48,11 @@ class ViewController: UIViewController {
   // MARK: - TableView
   
   private func configureTableView() {
-    self.view.addSubview(tableView)
+    view.addSubview(tableView)
     tableView.backgroundColor = .systemBackground
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.rowHeight = 80
     tableView.register(AttachmentDetailCell.self,
                        forCellReuseIdentifier: AttachmentDetailCell.reuseIdentifier)
     tableViewConstraint()

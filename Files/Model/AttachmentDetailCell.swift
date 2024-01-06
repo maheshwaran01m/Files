@@ -14,13 +14,6 @@ class AttachmentDetailCell: UITableViewCell {
   
   // MARK: - Outlets
   
-  lazy var containerView: UIView = {
-    $0.backgroundColor = .systemGroupedBackground
-    $0.setContentHuggingPriority(.required, for: .vertical)
-    $0.translatesAutoresizingMaskIntoConstraints = false
-    return $0
-  }(UIView())
-  
   private lazy var imageDetailView: UIImageView = {
     $0.contentMode = .scaleToFill
     $0.translatesAutoresizingMaskIntoConstraints = false
@@ -58,26 +51,19 @@ class AttachmentDetailCell: UITableViewCell {
   }
   
   private func makeConstraint() {
-    contentView.addSubview(containerView)
-    containerView.addSubview(imageDetailView)
-    containerView.addSubview(titleLabel)
+    contentView.addSubview(imageDetailView)
+    contentView.addSubview(titleLabel)
     
     NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-      containerView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-      containerView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
-      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      imageDetailView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+      imageDetailView.leftAnchor.constraint(equalTo: leftAnchor, constant: 5),
+      imageDetailView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+      imageDetailView.widthAnchor.constraint(equalToConstant: 80),
       
-      imageDetailView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-      imageDetailView.leftAnchor.constraint(equalTo: containerView.leftAnchor, constant: 5),
-      imageDetailView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-      imageDetailView.widthAnchor.constraint(equalToConstant: self.frame.width/3),
-      imageDetailView.heightAnchor.constraint(equalToConstant: self.frame.width/3),
-      
-      titleLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-      titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+      titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+      titleLabel.centerYAnchor.constraint(equalTo: imageDetailView.centerYAnchor),
       titleLabel.leftAnchor.constraint(equalTo: imageDetailView.rightAnchor, constant: 15),
-      titleLabel.rightAnchor.constraint(equalTo: containerView.rightAnchor, constant: -5),
+      titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),
     ])
   }
 }
