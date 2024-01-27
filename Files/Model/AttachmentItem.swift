@@ -43,7 +43,7 @@ extension AttachmentItem {
   }
   
   var filePath: String? {
-    guard let privateID, let fileName, let fileExtension else { return nil }
+    guard let privateID, let fileName else { return nil }
     let finalPath = "/\(directoryPath)/attachments/" + privateID + "/" + fileName
     return finalPath
   }

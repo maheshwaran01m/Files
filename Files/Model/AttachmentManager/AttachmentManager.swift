@@ -41,8 +41,16 @@ class AttachmentManager: NSObject {
     let actionSheet = UIAlertController(
       title: "Choose an attachment source", message: nil, preferredStyle: .actionSheet)
     
-    let librayOption = UIAlertAction(title: "Photo Library", style: .default) { [weak self] _ in
+    let cameraOption = UIAlertAction(title: "Camera", style: .default) { [weak self] _ in
+      self?.presentImagePicker(.takePhoto)
+    }
+    
+    let videoOption = UIAlertAction(title: "Video", style: .default) { [weak self] _ in
       self?.presentPhotoPicker()
+    }
+    
+    let librayOption = UIAlertAction(title: "Photo Library", style: .default) { [weak self] _ in
+      self?.presentImagePicker(.takeVideo)
     }
     
     let documentOption = UIAlertAction(title: "Documents", style: .default) { [weak self] _ in
@@ -50,8 +58,9 @@ class AttachmentManager: NSObject {
     }
     let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
     
-    let actions = [librayOption, documentOption, cancelAction]
-    actions.forEach({ actionSheet.addAction($0) })
+    let actions = [cameraOption, videoOption, librayOption, documentOption, cancelAction]
+    actions.forEach { actionSheet.addAction($0) }
+    
     vc.modalPresentationStyle = .fullScreen
     if let popOver = actionSheet.popoverPresentationController {
       vc.modalPresentationStyle = .popover
@@ -76,6 +85,7 @@ class AttachmentManager: NSObject {
     picker.delegate = self
     presentingVC?.present(picker, animated: true)
   }
+  
   private func presentDocumentPicker() {
     let type: [UTType] = [.pdf, .png, .jpeg, .video, .movie, .text,
                           .mpeg4Movie, .mp3, .rtf, .init(filenameExtension: "doc") ?? .pdf]
@@ -83,6 +93,32 @@ class AttachmentManager: NSObject {
     documentPicker.delegate = self
     documentPicker.allowsMultipleSelection = false
     presentingVC?.present(documentPicker, animated: true)
+  }
+  
+  private func presentImagePicker(_ sourceType: AttachmentSourceType) {
+    let picker = UIImagePickerController()
+    picker.allowsEditing = false
+    
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+      if sourceType == .takePhoto {
+        picker.sourceType = .camera
+        picker.cameraCaptureMode = .photo
+      } else if sourceType == .takeVideo {
+        picker.sourceType = .camera
+        picker.mediaTypes = [UTType.movie.identifier]
+        picker.cameraCaptureMode = .video
+        picker.videoQuality = .typeHigh
+        picker.videoMaximumDuration = 60
+      }
+    } else {
+      picker.sourceType = .photoLibrary
+    }
+    picker.delegate = self
+    presentingVC?.present(picker, animated: true)
+  }
+  
+  enum AttachmentSourceType {
+    case takePhoto, takeVideo, library
   }
 }
 
