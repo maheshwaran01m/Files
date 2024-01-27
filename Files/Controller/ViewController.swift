@@ -132,6 +132,7 @@ extension ViewController: AttachmentDelegate {
       let vc = QuickLookEditorVC(for: attachmentItem)
       vc.saveDelegate = self
       let navigationVC = UINavigationController(rootViewController: vc)
+      navigationVC.modalPresentationStyle = .fullScreen
       present(navigationVC, animated: true)
     } else {
       getCustomFileName { [weak self] fileName in
