@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import MobileCoreServices
 import PhotosUI
+import UniformTypeIdentifiers
 
 protocol AttachmentDelegate: AnyObject {
   func attachmentManager(_ attachmentItem: AttachmentItem, type: AttachmentType)
@@ -41,16 +42,16 @@ class AttachmentManager: NSObject {
     let actionSheet = UIAlertController(
       title: "Choose an attachment source", message: nil, preferredStyle: .actionSheet)
     
-    let cameraOption = UIAlertAction(title: "Camera", style: .default) { [weak self] _ in
+    let cameraOption = UIAlertAction(title: "Take Camera", style: .default) { [weak self] _ in
       self?.presentImagePicker(.takePhoto)
     }
     
-    let videoOption = UIAlertAction(title: "Video", style: .default) { [weak self] _ in
-      self?.presentPhotoPicker()
+    let videoOption = UIAlertAction(title: "Take Video", style: .default) { [weak self] _ in
+      self?.presentImagePicker(.takeVideo)
     }
     
     let librayOption = UIAlertAction(title: "Photo Library", style: .default) { [weak self] _ in
-      self?.presentImagePicker(.takeVideo)
+      self?.presentPhotoPicker()
     }
     
     let documentOption = UIAlertAction(title: "Documents", style: .default) { [weak self] _ in
@@ -99,7 +100,7 @@ class AttachmentManager: NSObject {
     let picker = UIImagePickerController()
     picker.allowsEditing = false
     
-    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+    if UIImagePickerController.isSourceTypeAvailable(.camera) && !isSimulator {
       if sourceType == .takePhoto {
         picker.sourceType = .camera
         picker.cameraCaptureMode = .photo
@@ -108,7 +109,6 @@ class AttachmentManager: NSObject {
         picker.mediaTypes = [UTType.movie.identifier]
         picker.cameraCaptureMode = .video
         picker.videoQuality = .typeHigh
-        picker.videoMaximumDuration = 60
       }
     } else {
       picker.sourceType = .photoLibrary
@@ -237,5 +237,16 @@ extension AttachmentManager: UIDocumentPickerDelegate {
       fileURL: url,
       fileExtension: extn,
       directoryPath: directoryPath)
+  }
+}
+
+extension AttachmentManager {
+  
+  private var isSimulator: Bool {
+    var isSimulator = false
+    #if targetEnvironment(simulator)
+     isSimulator = true
+    #endif
+    return isSimulator
   }
 }
