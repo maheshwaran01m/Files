@@ -195,8 +195,7 @@ extension QuickLookEditorVC {
   // MARK: - Create a Copy
   
   public func createCopyOfFile(_ url: URL?) -> URL? {
-    guard let url, FileManager.default.fileExists(atPath: url.path),
-          url.startAccessingSecurityScopedResource() else { return nil }
+    guard let url, FileManager.default.fileExists(atPath: url.path) else { return nil }
     do {
       let newPath = url.deletingPathExtension().path + "Copy.\(url.pathExtension)"
       // Clear the existing file before creating copy
